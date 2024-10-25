@@ -1,0 +1,56 @@
+package Contenedor;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+
+public class ConectorBd {
+	private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
+	private static final String URL = "jdbc:mysql://bw2uvyre8khrg7weegni-mysql.services.clever-cloud.com/bw2uvyre8khrg7weegni";
+	private static final String USUARIO = "root";
+	private static final String CLAVE = "root";
+	
+	Connection cn = null;
+	Statement stm = null;
+	ResultSet resultado = null;
+	
+	public Connection conexion_correcta() {
+		try {
+			cn = DriverManager.getConnection(URL, USUARIO, CLAVE);
+			System.out.println("Conexion realizada correctamente");
+		} catch (SQLException e) {
+			System.out.println("Error en la conexion");
+			e.printStackTrace();
+		}
+		return cn;
+	}
+
+	public ArrayList buscarActor(String nombreActor) {
+		
+		ArrayList arrayActores = new ArrayList();
+		
+		try {
+			conexion_correcta();
+			resultado = stm.executeQuery("select * from actor where first_name = '"+nombreActor+"'");
+			
+			while(resultado.next()) {
+				String nombreEncontrado = resultado.getString("first_name");
+				String apellidoEncontrado = resultado.getString("last_name");
+				arrayActores.add(nombreEncontrado + ", " + apellidoEncontrado); 
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return arrayActores;
+	}
+	
+	
+	
+}

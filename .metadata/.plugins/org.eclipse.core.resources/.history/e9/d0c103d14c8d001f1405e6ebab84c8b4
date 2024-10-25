@@ -1,0 +1,335 @@
+package ejercicioBotones;
+
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JPasswordField;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JSlider;
+import javax.swing.AbstractListModel;
+import javax.swing.ButtonGroup;
+import javax.swing.JProgressBar;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+
+public class JfPrincipal extends JFrame implements ActionListener{
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField txtNombre,txtEmpresa;
+	private JPasswordField pswUsuario;
+	private JButton btnBuscar, btnHabilitar, btnHola, btnChau, btnArgegarEmpresa, btnEliminarEmpresa, btnBorrar;
+	private JCheckBox chkUsuarioSeleccionado;
+	private JTextArea txaComentarios;
+	private JList list;
+	private DefaultListModel modelo;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					JfPrincipal frame = new JfPrincipal();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public JfPrincipal() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		setBounds(100, 100, 648, 424);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		int heightPantalla = pantalla.height;
+		int widthPantalla = pantalla.width;
+		this.setSize(widthPantalla/2,heightPantalla/2);
+		setResizable(false);
+		setTitle("BOEEEE");
+
+		setIconImage(new ImageIcon(getClass().getResource("/img/beber.png")).getImage());
+		
+		this.setLocationRelativeTo(null);
+		
+		txtNombre = new JTextField();
+		txtNombre.setToolTipText("Introduce nombre del usuario");
+		txtNombre.setBounds(10, 25, 86, 20);
+		contentPane.add(txtNombre);
+		txtNombre.setColumns(10);
+		
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setToolTipText("Introduce nombre de lusuario");
+		lblNombre.setBounds(10, 11, 46, 14);
+		contentPane.add(lblNombre);
+		
+		JComboBox cmbCurso = new JComboBox();
+		cmbCurso.setModel(new DefaultComboBoxModel(new String[] {"DAM", "DAW", "ASIR"}));
+//		cmbCurso.setSelectedIndex(1);
+		cmbCurso.setBounds(10, 56, 86, 22);
+		contentPane.add(cmbCurso);
+		
+		chkUsuarioSeleccionado = new JCheckBox("Usuario seleccionado");
+		chkUsuarioSeleccionado.setBounds(6, 130, 132, 23);
+		contentPane.add(chkUsuarioSeleccionado);
+		
+		JRadioButton rbAprobado = new JRadioButton("Aprobado");
+		rbAprobado.setBounds(16, 154, 109, 23);
+		contentPane.add(rbAprobado);
+		
+		JRadioButton rbSuspenso = new JRadioButton("Suspenso");
+		rbSuspenso.setBounds(16, 180, 109, 23);
+		contentPane.add(rbSuspenso);
+		
+		JCheckBox chkAccesoADatos = new JCheckBox("Acceso a datos");
+		chkAccesoADatos.setBounds(6, 250, 132, 23);
+		contentPane.add(chkAccesoADatos);
+		
+		JCheckBox chkProcesos = new JCheckBox("Procesos");
+		chkProcesos.setBounds(6, 276, 97, 23);
+		contentPane.add(chkProcesos);
+		
+		txaComentarios = new JTextArea();
+		txaComentarios.setBounds(220, 23, 194, 89);
+		txaComentarios.setBorder(new LineBorder(new Color(255,0,0)));
+		contentPane.add(txaComentarios);
+		JScrollPane scroll = new JScrollPane(txaComentarios);
+		scroll.setBounds(220, 23, 194, 89);
+		contentPane.add(scroll);
+		
+		pswUsuario = new JPasswordField();
+		pswUsuario.setBounds(220, 181, 194, 20);
+		contentPane.add(pswUsuario);
+		
+		JCheckBox chkDesarrolloDeInt = new JCheckBox("Desarrollo de interfaces");
+		chkDesarrolloDeInt.setBounds(6, 302, 156, 23);
+		contentPane.add(chkDesarrolloDeInt);
+		
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setValue(40);
+		progressBar.setBounds(750, 421, 146, 14);
+		contentPane.add(progressBar);
+		
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.setBounds(6, 103, 86, 20);
+		contentPane.add(btnBuscar);
+		btnBuscar.addActionListener(this);
+		
+		btnHabilitar = new JButton("Habilitar");
+		btnHabilitar.addActionListener(this);
+		btnHabilitar.setBounds(87, 103, 86, 20);
+		btnHabilitar.setVisible(false);
+		contentPane.add(btnHabilitar);
+		
+		//Creacion de grupos
+		ButtonGroup radioGroup = new ButtonGroup();
+		radioGroup.add(rbSuspenso);
+		radioGroup.add(rbAprobado);
+		
+		ButtonGroup chkGroup = new ButtonGroup();
+		chkGroup.add(chkProcesos);
+		chkGroup.add(chkDesarrolloDeInt);
+		
+		btnHola = new JButton("Hola");
+		btnHola.addActionListener(this);
+		btnHola.setBounds(218, 123, 89, 23);
+		contentPane.add(btnHola);
+		
+		btnChau = new JButton("Chau");
+		btnChau.addActionListener(this);
+		btnChau.setBounds(325, 123, 89, 23);
+		contentPane.add(btnChau);
+		
+		list = new JList();
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setBounds(220, 215, 194, 138);
+		modelo = new DefaultListModel();
+		contentPane.add(list);
+		
+		
+		JScrollPane scrollLista = new JScrollPane(list);
+		scrollLista.setBounds(220, 215, 194, 138);
+		contentPane.add(scrollLista);
+	
+		modelo.addElement("Empresa 1");
+		modelo.addElement("Empresa 2");
+		modelo.addElement("Empresa 3");
+		
+		list.setModel(modelo);
+		
+
+
+		btnArgegarEmpresa = new JButton("Argegar");
+		btnArgegarEmpresa.addActionListener(this);
+		btnArgegarEmpresa.setBounds(612, 212, 89, 23);
+		contentPane.add(btnArgegarEmpresa);
+		
+		btnEliminarEmpresa = new JButton("Eliminar");
+		btnEliminarEmpresa.setBounds(424, 302, 89, 23);
+		btnEliminarEmpresa.addActionListener(this);
+		contentPane.add(btnEliminarEmpresa);
+		
+		btnBorrar = new JButton("Borrar");
+		btnBorrar.setBounds(424, 330, 89, 23);
+		btnBorrar.addActionListener(this);
+		contentPane.add(btnBorrar);
+		
+		txtEmpresa = new JTextField();
+		txtEmpresa.setBounds(424, 213, 178, 20);
+		contentPane.add(txtEmpresa);
+		txtEmpresa.setColumns(10);
+		
+		
+		
+		
+	}
+	private void validarUsuario(String nombreUsuario) {
+		Pattern patronNombreUsuario = Pattern.compile("[a-zA-Z]{2}");
+		
+		Matcher mat = patronNombreUsuario.matcher(nombreUsuario);
+		
+		if(mat.find()) {
+			JOptionPane.showMessageDialog(chkUsuarioSeleccionado, "El usuario ha sido encontrado");
+			btnHabilitar.setVisible(true);
+			btnBuscar.setVisible(false);
+			txtNombre.setEnabled(false);
+			chkUsuarioSeleccionado.setEnabled(false);
+			chkUsuarioSeleccionado.setSelected(true);
+		}else {
+			JOptionPane.showMessageDialog(btnBuscar, "Introduzca el nombre de usuario correctamente", "error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String textoIntroducido = txaComentarios.getText().toLowerCase();
+		if(e.getSource() == btnBuscar) {
+			if(txtNombre.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(btnBuscar, "Introduzca el nombre de usuario correctamente", "error", JOptionPane.ERROR_MESSAGE);
+			}else {
+				String nombreUsuario = txtNombre.getText();
+				validarUsuario(nombreUsuario);
+			}
+		}
+		else if(e.getSource() == btnHabilitar) {
+			btnHabilitar.setVisible(false);
+			btnBuscar.setVisible(true);
+			txtNombre.setText("");
+			txtNombre.setEnabled(true);
+			chkUsuarioSeleccionado.setEnabled(true);
+			chkUsuarioSeleccionado.setSelected(false);
+		}
+		else if(e.getSource() == btnHola) {
+			if(textoIntroducido.contains("hola")) {
+				JOptionPane.showMessageDialog(btnHola, "Contiene hola","Contiene o no",JOptionPane.INFORMATION_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(btnHola, "No contiene la palabra","Contiene o no",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(e.getSource() == btnChau) {
+			if(textoIntroducido.indexOf("chau") != -1) {
+				JOptionPane.showMessageDialog(btnHola, "Contiene chau","Contiene o no",JOptionPane.INFORMATION_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(btnHola, "No contiene la palabra","Contiene o no",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(e.getSource() == btnArgegarEmpresa) {
+			agregarEmpresa();
+		}
+		else if(e.getSource()==btnEliminarEmpresa) {
+			eliminarEmpresa(list.getSelectedIndex());
+		}
+		else if(e.getSource()==btnBorrar) {
+			borrarEmpresas();
+		}
+	}
+
+
+
+	private void borrarEmpresas() {
+		list.removeAll();
+		
+	}
+
+	private void agregarEmpresa() {
+		String nombreEmpresa = txtEmpresa.getText();
+		String patronBase = "[a-zA-Z0-9 ]+";
+		Pattern patronEmpresa = Pattern.compile(patronBase);
+		Matcher mat = patronEmpresa.matcher(nombreEmpresa);
+		if(mat.matches()) {
+			String patronBase2 = ".*oo.*";
+			Pattern patronEmpresa2 = Pattern.compile(patronBase2);
+			Matcher mat2 = patronEmpresa2.matcher(nombreEmpresa.toLowerCase());
+			if(mat2.matches()) {
+				JOptionPane.showMessageDialog(list, "El nombre introducido no es valido (google)", "Error", JOptionPane.ERROR_MESSAGE);
+			}else {
+				if(modelo.contains(nombreEmpresa)) {
+					JOptionPane.showMessageDialog(list, "El nombre ya esta introducido", "Error", JOptionPane.ERROR_MESSAGE);
+				}else {
+					modelo.addElement(nombreEmpresa);
+					list.setModel(modelo);
+					btnEliminarEmpresa.setEnabled(true);
+				}
+				
+			}
+			
+		}else {
+			JOptionPane.showMessageDialog(list, "El nombre introducido no es correcto", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		txtEmpresa.setText("");
+		
+	}
+	
+	private void eliminarEmpresa(int indiceSeleccionado) {
+		
+		if(indiceSeleccionado >= 0) {
+			int opcion = JOptionPane.showConfirmDialog(this, "Esta seguro que quiere eliminar la empresa", "Eliminar empresa",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+
+			if(opcion == 0) {
+				modelo.removeElementAt(indiceSeleccionado);
+				
+				if(modelo.isEmpty()) {
+					btnEliminarEmpresa.setEnabled(false);
+				}
+				
+			}
+		}else {
+			JOptionPane.showMessageDialog(list, "Seleccione un elemento", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		
+	}
+}

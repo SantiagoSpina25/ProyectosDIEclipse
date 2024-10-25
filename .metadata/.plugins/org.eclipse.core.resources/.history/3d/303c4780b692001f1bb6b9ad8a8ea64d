@@ -1,0 +1,10 @@
+package Contenedor;
+
+public class ConexionMySql {
+	private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
+	private static final String URL = "jdbc:mysql://localhost/sakila";
+	private static final String USUARIO = "root";
+	private static final String CLAVE = "root";
+	
+	
+}

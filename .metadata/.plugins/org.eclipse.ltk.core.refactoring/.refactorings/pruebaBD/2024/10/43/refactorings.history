@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;ConectorBd.java&apos; to &apos;interfazTabla/src/Contenedor&apos;&#x0D;&#x0A;- Original project: &apos;pruebaBD&apos;&#x0D;&#x0A;- Destination element: &apos;interfazTabla/src/Contenedor&apos;&#x0D;&#x0A;- Original element: &apos;pruebaBD.ConectorBd.java&apos;" description="Copy compilation unit" destination="=interfazTabla/src&lt;Contenedor" element1="/src&lt;pruebaBD{ConectorBd.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1729849398097" units="1" version="1.0"/>
+</session>
